@@ -4,6 +4,25 @@ import pygame
 TAILLE_CASE = 80
 TAILLE_ECRAN = 8 * TAILLE_CASE
 
+
+    
+def finish(tableau):
+    nb_ones = 0
+    for ligne in tableau:
+        for element in ligne:
+            if element == 1:
+                nb_ones += 1
+    if nb_ones == 8:
+        return True
+    else:
+        return False
+
+def next_case(i):
+    if i == 7:
+        return 0
+    else:
+        return i+1
+
 def est_valide(tab, r, c):
     """
     Vérifie si une reine peut être placée en (r,c) sur l'échiquier.
@@ -21,7 +40,7 @@ def est_valide(tab, r, c):
                     return False
     return True
 
-def placer_reine(tab, col):
+def placer_reine_temp(tab, col):
     """
     Place une reine sur la colonne 'col' de l'échiquier 'tab'.
     Retourne True si une solution a été trouvée, False sinon.
@@ -44,6 +63,32 @@ def placer_reine(tab, col):
             pygame.display.update()
     return False
 
+def placer_reine(tab, col, n):
+    if finish(tab):
+        print("---------- ",n," ---------")
+        print(tab)
+        return True
+    c = 0
+    lig = n
+    
+    while c < 8:
+        
+        c = c + 1
+        if est_valide(tab, lig, col):
+            tab[lig][col] = 1
+            pygame.time.wait(10)  # Attendre un peu pour l'affichage
+            afficher_echiquier(tab)
+            pygame.display.update()
+            if placer_reine(tab, next_case(col),lig):
+                return True
+            tab[lig][col] = 0
+            pygame.time.wait(10)  # Attendre un peu pour l'affichage
+            afficher_echiquier(tab)
+            pygame.display.update()
+        lig = next_case(lig)
+    return False  
+        
+
 def afficher_echiquier(tab):
     """
     Affiche l'échiquier sur l'écran Pygame.
@@ -65,7 +110,9 @@ pygame.display.set_caption("Problème des huit reines")
 
 # Programme principal
 echiquier = [[0 for j in range(8)] for i in range(8)]
-placer_reine(echiquier, 0)
+
+
+placer_reine(echiquier, 0, 2)
 
 # Boucle d'événements Pygame
 while True:
