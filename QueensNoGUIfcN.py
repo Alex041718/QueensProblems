@@ -1,8 +1,8 @@
-
+import time
 ##isomorphisme des graphe
 
 
-
+N = 8
     
 def finish(tableau):
     nb_ones = 0
@@ -10,13 +10,13 @@ def finish(tableau):
         for element in ligne:
             if element == 1:
                 nb_ones += 1
-    if nb_ones == 8:
+    if nb_ones == N:
         return True
     else:
         return False
 
 def next_case(i):
-    if i == 7:
+    if i == N-1:
         return 0
     else:
         return i+1
@@ -27,12 +27,12 @@ def est_valide(tab, r, c):
     Retourne True si c'est le cas, False sinon.
     """
     # Vérifier la rangée et la colonne
-    for i in range(8):
+    for i in range(N):
         if tab[r][i] == 1 or tab[i][c] == 1:
             return False
     # Vérifier les diagonales
-    for i in range(8):
-        for j in range(8):
+    for i in range(N):
+        for j in range(N):
             if (i + j == r + c) or (i - j == r - c):
                 if tab[i][j] == 1:
                     return False
@@ -49,7 +49,7 @@ def placer_reine(tab, col, lig, n):
     c = 0
     
     
-    while c < 8:
+    while c < N:
         
         c = c + 1
         if est_valide(tab, lig, col):
@@ -71,9 +71,9 @@ def afficher_echiquier(tab):
     """
     Affiche l'échiquier sur l'écran Pygame.
     """
-    for i in range(8):
+    for i in range(N):
         
-        for j in range(8):
+        for j in range(N):
             if tab[i][j] == 1:
                 print("♛"," ",end='')
             else:
@@ -81,17 +81,23 @@ def afficher_echiquier(tab):
         print("")
 
 def init_echiquier():
-    return [[0 for j in range(8)] for i in range(8)]
+    return [[0 for j in range(N)] for i in range(N)]
 
 # Programme principal
 echiquier = init_echiquier()
 
 tab = []
 
-for i in range(8):
+start = time.time()
+
+for i in range(N):
+    
     placer_reine(echiquier, 0, i, i)
+    
     tab.append(echiquier)
     echiquier = init_echiquier()
+    
+print(time.time() - start)
 
 
 
