@@ -5,7 +5,7 @@
 import time
 
 # la variable N contient la taille de l'échiquier ainsi que le nombre de reines
-N = 8
+N = 10
 
 
 def solve_queen_problem(N):
